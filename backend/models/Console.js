@@ -16,7 +16,7 @@ const Console = db.define('console', {
         allowNull: false
     },
     numeroSerie: {
-        type: DataTypes.STRING(100),
+        type: DataTypes.INTEGER,
         allowNull: false
     },
     tipoServico: {

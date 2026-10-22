@@ -2,8 +2,6 @@
 GET http://localhost:3000/
 Content-Type: application/json
 
-###
-
 ### 1. Cadastrar Cliente 
 POST http://localhost:3000/cliente
 Content-Type: application/json
@@ -13,37 +11,168 @@ Content-Type: application/json
   "email": "carlos@gmail.com",
   "senha": "abc",
   "cpf": "12345678901",
-  "endereco": "Rua Lages, 123"
+  "telefone": "47999123456"
 }
 
-###
-
-### 2. Listar Clientes
-GET http://localhost:3000/clientes
-Authorization: token
+### 2. Cadastrar Cliente 2 
+POST http://localhost:3000/cliente
 Content-Type: application/json
 
-###
+{
+  "nome": "Sofia",
+  "email": "sofia@gmail.com",
+  "senha": "def",
+  "cpf": "09876543210",
+  "telefone": "47999098765"
+}
 
-### 3. Cadastrar Console
+### 3. Cadastrar Cliente 3
+POST http://localhost:3000/cliente
+Content-Type: application/json
+
+{
+  "nome": "Caio",
+  "email": "caio@gmail.com",
+  "senha": "ghi",
+  "cpf": "23456789012",
+  "telefone": "47999234567"
+}
+
+### 4. Testar login
+# @name loginReq
+POST http://localhost:3000/login
+Content-Type: application/json
+
+{
+  "email": "carlos@gmail.com",
+  "senha": "abc"
+}
+
+### 5. Listar Clientes
+GET http://localhost:3000/clientes
+Authorization: {{loginReq.response.body.token}}
+Content-Type: application/json
+
+### 5. Consultar Cliente
+GET http://localhost:3000/cliente/1
+Authorization: {{loginReq.response.body.token}}
+Content-Type: application/json
+
+### 6. Atualizar cliente
+PUT http://localhost:3000/cliente/1
+Authorization: {{loginReq.response.body.token}}
+Content-Type: application/json
+
+{
+  "nome": "Carlos Atualizado",
+  "email": "carlos@gmail.com",
+  "senha": "abc",
+  "cpf": "12345678901",
+  "telefone": "47999123456"
+}
+
+### 7. Excluir Cliente
+DELETE  http://localhost:3000/cliente/1
+Authorization: {{loginReq.response.body.token}}
+Content-Type: application/json
+
+
+
+### 8. Cadastrar Console
 POST http://localhost:3000/console
-Authorization: token
+Authorization: {{loginReq.response.body.token}}
 Content-Type: application/json
 
 {
   "modelo": "PlayStation 5",
-  "marca": "Sony"
+  "marca": "Sony",
+  "numeroSerie": "123",
+  "tipoServico": "Manutenção",
+  "idCliente": 2
 }
 
-###
+### 9. Cadastrar Console 2
+POST http://localhost:3000/console
+Authorization: {{loginReq.response.body.token}}
+Content-Type: application/json
 
-### 4. Cadastrar Agendamento
+{
+  "modelo": "XBOX 360",
+  "marca": "Microsoft",
+  "numeroSerie": "456",
+  "tipoServico": "Revisão",
+  "idCliente": 2
+}
+
+### 10. Cadastrar Console 3
+POST http://localhost:3000/console
+Authorization: {{loginReq.response.body.token}}
+Content-Type: application/json
+
+{
+  "modelo": "Nintendo Wii",
+  "marca": "Nintendo",
+  "numeroSerie": "789",
+  "tipoServico": "Limpeza",
+  "idCliente": 3
+}
+
+### 11. Listar Consoles
+GET http://localhost:3000/consoles
+Authorization: {{loginReq.response.body.token}}
+Content-Type: application/json
+
+
+
+### 12. Cadastrar Agendamento
 POST http://localhost:3000/agendamento
-Authorization: token
+Authorization: {{loginReq.response.body.token}}
 Content-Type: application/json
 
 {
   "data": "2026-11-10",
   "hora": "14:30:00",
-  "tipoServico": "Limpeza e troca de pasta térmica"
+  "idCliente": 2,
+  "idConsole": 2
+}
+
+### 13. Cadastrar Agendamento 2
+POST http://localhost:3000/agendamento
+Authorization: {{loginReq.response.body.token}}
+Content-Type: application/json
+
+{
+  "data": "2026-06-24",
+  "hora": "16:00:00",
+  "idCliente": 3,
+  "idConsole": 3
+}
+
+### 14. Cadastrar Agendamento 3
+POST http://localhost:3000/agendamento
+Authorization: {{loginReq.response.body.token}}
+Content-Type: application/json
+
+{
+  "data": "2026-10-06",
+  "hora": "08:30:00",
+  "idCliente": 2,
+  "idConsole": 2
+}
+
+### 15. Listar Agendamentos
+GET http://localhost:3000/agendamentos
+Authorization: {{loginReq.response.body.token}}
+Content-Type: application/json
+
+### 16. Atualizar agendamento
+PUT http://localhost:3000/agendamento/1
+Authorization: {{loginReq.response.body.token}}
+Content-Type: application/json
+
+{
+  "data": "2026-09-21",
+  "hora": "08:30:00",
+  "idCliente": 2,
+  "idConsole": 2
 }

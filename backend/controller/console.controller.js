@@ -1,8 +1,8 @@
 const Console = require('../models/Console')
+const Cliente = require('../models/Cliente')
 const CryptoJS = require('crypto-js')
 const CHAVE_SECRETA = 'segredo'
 
-// ===== CONSOLE =====
 const cadastrar = async (req, res) => {
     const valores = req.body
 
@@ -13,7 +13,12 @@ const cadastrar = async (req, res) => {
     try {
         const numeroSerieCriptografado = CryptoJS.AES.encrypt(valores.numeroSerie, CHAVE_SECRETA).toString()
 
-        await Console.create({
+        const cliente = await Cliente.findByPk(valores.idCliente)
+        if(!cliente){
+            return res.status(404).json({message: 'Cliente não encontrado!'})
+        }
+
+        const novoConsole = await Console.create({
             modelo: valores.modelo,
             marca: valores.marca,
             numeroSerie: numeroSerieCriptografado,     
@@ -21,10 +26,6 @@ const cadastrar = async (req, res) => {
             idCliente: valores.idCliente
         })
 
-        const cliente = await Cliente.findByPk(valores.idCliente)
-        if(!cliente){
-            return res.status(404).json({message: 'Cliente não encontrado!'})
-        }
 
         return res.status(201).json({ message: 'Console cadastrado com sucesso!', console: novoConsole })
     } catch (err) {
@@ -41,7 +42,7 @@ const listar = async(req,res) =>{
         consoles.forEach((el)=>{
             let numeroSerieDescriptografado = ''
             try{
-                const bytes = CryptoJS.AES.decrypt(el.cpf, CHAVE_SECRETA)
+                const bytes = CryptoJS.AES.decrypt(el.numeroSerie, CHAVE_SECRETA)
                 numeroSerieDescriptografado = bytes.toString(CryptoJS.enc.Utf8)
             }catch(err){
                 numeroSerieDescriptografado = 'Erro ao descriptografar!'

@@ -8,23 +8,36 @@ const conn = require('./db/conn')
 
 require('./models/rel')
  
-const controller = require('./controller/geral.controller')
+const authMiddleware = require('./middleware/auth.middleware')
+const authController = require('./controller/auth.controller')
+const clienteController = require('./controller/cliente.controller')
+const consoleController = require('./controller/console.controller')
+const agendamentoController = require('./controller/agendamento.controller')
 
 app.use(express.urlencoded({ extended: true }))
 app.use(express.json())
 app.use(cors())
 
+app.post('/cliente', clienteController.cadastrar)
+app.post('/login', authController.login)
+
 app.get('/', (req, res) => {
     res.status(200).json({ message: 'API PixelFix Rodando!' })
 })
 
-app.post('/cliente', controller.cadastrarCliente)
+app.use(authMiddleware)
 
-app.use(controller.authMiddleware)
+app.get('/clientes', clienteController.listar)
+app.get('/cliente/:id', clienteController.consultar)
+app.put('/cliente/:id', clienteController.atualizar)
+app.delete('/cliente/:id', clienteController.apagar)
 
-app.post('/console', controller.cadastrarConsole)
-app.get('/clientes', controller.listarClientes)
-app.post('/agendamento', controller.cadastrarAgendamento)
+app.post('/console', consoleController.cadastrar)
+app.get('/consoles', consoleController.listar)
+
+app.post('/agendamento', agendamentoController.cadastrar)
+app.get('/agendamentos', agendamentoController.listarAgenda)
+app.put('/agendamento/:id', agendamentoController.atualizar)
 
 conn.sync()
     .then(() => {
