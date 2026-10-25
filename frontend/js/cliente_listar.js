@@ -31,7 +31,6 @@ function criarTbody(dados) {
         corpo += `<td>${el.nome}</td>`
         corpo += `<td>${el.email}</td>`
         corpo += `<td>${el.cpf}</td>`
-        corpo += `<td>${el.endereco}</td>`
         corpo += `</tr>`
     })
     corpo += `</tbody>`
@@ -46,7 +45,6 @@ function criarThead() {
                 <th>Nome</th>
                 <th>E-mail</th>
                 <th>CPF</th>
-                <th>Endereço</th>
             </tr>
         </thead>
     `

@@ -1,3 +1,9 @@
+const token = localStorage.getItem('token')
+
+if(!token){
+    location.href = '../index.html'
+}
+
 const btn_cadastrar = document.getElementById('btn_cadastrar')
 const resposta = document.getElementById('resposta')
 
@@ -7,21 +13,33 @@ btn_cadastrar.addEventListener('click', (e) => {
     const valores = {
         data: document.getElementById('data').value,
         hora: document.getElementById('hora').value,
-        tipoServico: document.getElementById('tipoServico').value
+        idCliente: Number(document.getElementById('idCliente').value),
+        idConsole: Number(document.getElementById('idConsole').value)
     }
 
     fetch('http://localhost:3000/agendamento', {
         method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
+        headers: { 
+            'Content-Type': 'application/json',
+            'Authorization': token 
+        },
         body: JSON.stringify(valores)
     })
-    .then(res => res.json())
+    .then(res => {
+        if(!res.ok){
+            localStorage.clear()
+            alert('Faça login novamente! Tempo expirado!')
+            location.href = '../index.html'
+            throw new Error('Sessão expirada!')
+        }
+        return res.json()
+    })
     .then(dados => {
         resposta.innerHTML = `<p>${dados.message}</p>`
         document.querySelector('form').reset()
     })
     .catch(err => {
-        console.error('Erro ao cadastrar agendamento:', err)
-        resposta.innerHTML = '<p>Erro ao tentar conectar com o servidor.</p>'
+        console.error('Erro ao cadastrar agendamento!', err)
+        resposta.innerHTML = '<p>Erro ao cadastrar agendamento!</p>'
     })
 })

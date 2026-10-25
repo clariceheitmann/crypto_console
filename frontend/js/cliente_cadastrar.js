@@ -9,7 +9,6 @@ btn_cadastrar.addEventListener('click', (e) => {
         email: document.getElementById('email').value,
         senha: document.getElementById('senha').value,
         cpf: document.getElementById('cpf').value,
-        endereco: document.getElementById('endereco').value
     }
 
     fetch('http://localhost:3000/cliente', {
@@ -23,7 +22,7 @@ btn_cadastrar.addEventListener('click', (e) => {
         document.querySelector('form').reset()
     })
     .catch(err => {
-        console.error('Erro ao cadastrar cliente:', err)
-        resposta.innerHTML = '<p>Erro ao tentar conectar com o servidor.</p>'
+        console.error('Erro ao cadastrar cliente!', err)
+        resposta.innerHTML = '<p>Erro ao cadastrar cliente!</p>'
     })
 })
