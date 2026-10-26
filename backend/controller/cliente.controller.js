@@ -2,7 +2,6 @@ const Cliente = require('../models/Cliente')
 const CryptoJS = require('crypto-js')
 const CHAVE_SECRETA = 'segredo'
 
-// ===== CLIENTE =====
 const cadastrar = async (req, res) => {
     const valores = req.body
 
@@ -91,70 +90,36 @@ const consultar = async(req,res) =>{
 
 const atualizar = async (req, res) => {
     const valores = req.body
-    console.log('Corpo recebido:', req.body)
-console.log('Content-Type:', req.headers['content-type'])
     const id = req.params.id
 
-    // Verifica se o corpo da requisição foi enviado
-    if (!valores) {
-        return res.status(400).json({
-            message: 'Envie os dados do cliente no corpo da requisição!'
-        })
+    if (!valores.nome || !valores.email || !valores.senha || !valores.cpf || !valores.telefone) {
+        return res.status(400).json({message: 'Preencha todos os campos!'})
     }
 
-    // Verifica se todos os campos foram preenchidos
-    if (!valores.nome || !valores.email || !valores.senha ||
-        !valores.cpf || !valores.telefone) {
-        return res.status(400).json({
-            message: 'Preencha todos os campos!'
-        })
-    }
-
-    // Verifica se o CPF possui 11 caracteres
-    if (valores.cpf.length !== 11) {
-        return res.status(400).json({
-            message: 'O CPF deve conter 11 números'
-        })
+    if (valores.cpf.length !== 11) {return res.status(400).json({message: 'O CPF deve conter 11 números'})
     }
 
     try {
         const cliente = await Cliente.findByPk(id)
-
-        if (!cliente) {
-            return res.status(404).json({
-                message: 'Cliente não encontrado!'
-            })
+        if (!cliente) { return res.status(404).json({message: 'Cliente não encontrado!'})
         }
 
-        // Criptografa novamente a senha e o CPF
         const dadosAtualizados = {
             nome: valores.nome,
             email: valores.email,
-            senha: CryptoJS.AES.encrypt(
-                valores.senha, CHAVE_SECRETA
-            ).toString(),
-            cpf: CryptoJS.AES.encrypt(
-                valores.cpf, CHAVE_SECRETA
-            ).toString(),
+            senha: CryptoJS.AES.encrypt(valores.senha, CHAVE_SECRETA).toString(),
+            cpf: CryptoJS.AES.encrypt(valores.cpf, CHAVE_SECRETA).toString(),
             telefone: valores.telefone
         }
 
-        await Cliente.update(dadosAtualizados, {
-            where: { codCliente: id }
-        })
-
-        return res.status(200).json({
-            message: 'Cliente atualizado com sucesso!'
-        })
+        await Cliente.update(dadosAtualizados, {where: { codCliente: id }})
+        return res.status(200).json({message: 'Cliente atualizado com sucesso!'})
 
     } catch (err) {
         console.error('Erro ao atualizar cliente!', err)
-        return res.status(500).json({
-            message: 'Erro ao atualizar cliente!'
-        })
+        return res.status(500).json({message: 'Erro ao atualizar cliente!'})
     }
 }
-
 
 const apagar = async(req,res) =>{
     const id = req.params.id 
