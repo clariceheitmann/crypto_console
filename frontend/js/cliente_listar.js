@@ -1,3 +1,9 @@
+const token = localStorage.getItem('token')
+
+if(!token){
+    location.href = '../index.html'
+}
+
 const resposta = document.getElementById('resposta')
 const btn_listar = document.getElementById('btn_listar')
 
@@ -6,9 +12,19 @@ btn_listar.addEventListener('click', (e) => {
 
     fetch('http://localhost:3000/clientes', {
         method: 'GET',
-        headers: { 'Content-Type': 'application/json' }
+        headers: { 'Content-Type': 'application/json',
+            'Authorization': token 
+         }
     })
-    .then(res => res.json())
+    .then(res => {
+            if (!res.ok) {
+                localStorage.clear()
+                alert('Faça login novamente, tempo expirado!')
+                location.href = '../index.html'
+                throw new Error('Sessão expirada')
+            }
+            return res.json()
+        })
     .then(dados => {
         resposta.innerHTML = `
             <table>
@@ -31,6 +47,7 @@ function criarTbody(dados) {
         corpo += `<td>${el.nome}</td>`
         corpo += `<td>${el.email}</td>`
         corpo += `<td>${el.cpf}</td>`
+        corpo += `<td>${el.telefone}</td>`
         corpo += `</tr>`
     })
     corpo += `</tbody>`
@@ -45,6 +62,7 @@ function criarThead() {
                 <th>Nome</th>
                 <th>E-mail</th>
                 <th>CPF</th>
+                <th>Telefone</th>
             </tr>
         </thead>
     `

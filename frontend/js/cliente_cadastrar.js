@@ -9,6 +9,7 @@ btn_cadastrar.addEventListener('click', (e) => {
         email: document.getElementById('email').value,
         senha: document.getElementById('senha').value,
         cpf: document.getElementById('cpf').value,
+        telefone: document.getElementById('telefone').value,
     }
 
     fetch('http://localhost:3000/cliente', {

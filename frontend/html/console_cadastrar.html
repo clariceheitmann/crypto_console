@@ -3,13 +3,14 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" href="./style.css">
-    <script src="./console_cadastrar.js" defer></script>
+    <link rel="stylesheet" href="../css/style.css">
+    <link rel="stylesheet" href="../css/sytle_cad.css">
+    <script src="../js/console_cadastrar.js" defer></script>
     <title>Cadastrar Console - PixelFix</title>
 </head>
 <body>
     <header>
-        <nav><a href="./index.html">Home</a></nav>
+        <nav><a href="../index.html">Home</a></nav>
         <br><hr><br>
     </header>
     <main>
@@ -21,9 +22,19 @@
             <label for="marca">Marca (ex: Sony, Nintendo)</label><br>
             <input type="text" id="marca" required><br><br>
 
+            <label for="numeroSerie">Número de Série</label><br>
+            <input type="number" id="numeroSerie" required><br><br>
+
+            <label for="tipoServico">Tipo de Serviço</label><br>
+            <input type="text" id="tipoServico" required><br><br>
+
+            <label for="idCliente">Código do Cliente</label><br>
+            <input type="number" id="idCliente" required><br><br>
+
             <button id="btn_cadastrar">Cadastrar</button>
         </form>
         <div id="resposta" class="resposta"></div>
     </main>
 </body>
 </html>
+

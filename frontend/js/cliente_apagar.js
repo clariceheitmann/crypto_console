@@ -41,7 +41,7 @@ btn_apagar.addEventListener('click', (e) => {
         document.querySelector('form').reset()
     })
     .catch(err => {
-        cliente.error('Erro ao apagar cliente!', err)
+        console.error('Erro ao apagar cliente!', err)
         resposta.innerHTML = '<p>Erro ao apagar cliente!</p>'
     })
 })

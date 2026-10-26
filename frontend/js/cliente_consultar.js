@@ -42,7 +42,7 @@ btn_consultar.addEventListener('click', (e) => {
         }
     })
     .catch(err => {
-        cliente.error('Erro ao consultar cliente!', err)
+        console.error('Erro ao consultar cliente!', err)
         resposta.innerHTML = '<p>Erro ao consultar cliente!</p>'
     })
 })

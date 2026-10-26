@@ -42,7 +42,7 @@ btn_atualizar.addEventListener('click', (e) => {
         document.querySelector('form').reset()
     })
     .catch(err => {
-        cliente.error('Erro ao atualizar cliente!', err)
+        console.error('Erro ao atualizar cliente!', err)
         resposta.innerHTML = '<p>Erro ao atualizar cliente!</p>'
     })
 })

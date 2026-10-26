@@ -43,16 +43,18 @@ btn_listar.addEventListener('click', (e) =>{
 })
 
 function criarTbody(dados){
-    let corpo = '<toby>'
+    let corpo = '<tbody>'
+
     dados.forEach(el => {
         corpo += `<tr>`
-        corpo += `<td>${el.codCliente || el.id}</td>`
+        corpo += `<td>${el.idCliente}</td>`
         corpo += `<td>${el.modelo}</td>`
         corpo += `<td>${el.marca}</td>`
         corpo += `<td>${el.numeroSerie}</td>`
         corpo += `<td>${el.tipoServico}</td>`
         corpo += `</tr>`
     })
+
     corpo += `</tbody>`
     return corpo
 }
